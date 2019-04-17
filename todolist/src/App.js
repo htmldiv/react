@@ -7,7 +7,7 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />这个是LOGO
+          <img src={logo} className="App-logo" alt="logo" />这个是LOGO啊
         </header>
       </div>
     );
