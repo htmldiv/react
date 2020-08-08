@@ -1,0 +1,94 @@
+<!--
+ * @Author: GuoZhongkang
+ * @Description: react 组件
+ * @Date: 2020-08-07 17:06:13
+ * @LastEditTime: 2020-08-08 11:08:26
+ * @FilePath: \react\002.html
+-->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>react 组件</title>
+<script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+<script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+<script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+</head>
+<body>
+    
+    <div id="example"></div>
+    <div id="example2"></div>
+    <script type="text/babel"> 
+        // 封装一个输出 "Hello World!" 的组件， 组件名称为HelloMessage
+        function HelloMessage(props) {
+            return <h1>Hello World!</h1>
+        }
+        const element1 = <HelloMessage/>
+        ReactDOM.render(
+            element1,
+            document.getElementById("example")
+        )
+
+        // 解析 我们可以用函数定义一个组件，例如上面的HelloMessage
+        // 还可以使用ES6的class来定义一个组件 ，如下
+        class Welcome extends React.Component{
+            render() {
+                return <h1>Hello World ES6</h1>
+            }
+        }
+
+        // 注意const element = <HelloMessage/> 为用户自定义的组件
+        // 注意： 原生的HTML元素名以小写字母开头，而自定义的React类名是以大写字母开头。
+        // 还要注意，组件类智能包含一个顶层的标签。否则也会报错， 类似于vue中.vue的组件
+
+        // 如果我们需要向组件传递参数， 还可以使用this.props对象，如下：
+        function HelloMessage2(props) {
+            return <h1>Hello Wrold {props.name}</h1>
+        }
+        const element2 = <HelloMessage2 name="ES6" />
+        ReactDOM.render(
+            element2,
+            document.getElementById("example")
+        )
+
+        // 上面的例子，name属性是通过props.name来获取的， 注意，在添加属性时，
+        // class属性要写成className， for属性要写成htmlFor, 这是因为class和for是JavaScript的保留字
+
+        // 复合组件
+        // 我们可以通过创建多个组件来合成一个组件， 即把组件的不同功能点进行分离
+        function Name(props) {
+            return <h1>姓名：{props.name}</h1>
+        }
+        function Age(props) {
+            return <h1>年龄：{props.age}</h1>
+        }
+        function Sex(props) {
+            return <h1>性别：{props.sex}</h1>
+        }
+        function Work(props) {
+            return <h1>工作：{props.work}</h1>
+        }
+
+        function App() {
+            return (
+                <div>
+                    <Name name="信小呆" />
+                    <Age age="18" />
+                    <Sex sex="女" />
+                    <Work work="程序媛" />
+
+                </div>
+            )
+        }
+        ReactDOM.render(
+            <App />,
+            document.getElementById("example")
+        )
+
+
+
+    </script>
+
+
+</body>
+</html>
