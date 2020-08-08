@@ -1,0 +1,57 @@
+<!--
+ * @Author: GuoZhongkang
+ * @Description: react React 事件处理
+ * @Date: 2020-08-07 17:06:13
+ * @LastEditTime: 2020-08-08 18:15:33
+ * @FilePath: \react\005事件处理.html
+-->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>React 事件处理</title>
+<script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+<script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+<script src="https://cdn.bootcss.com/prop-types/15.6.1/prop-types.js"></script>
+<script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+</head>
+<body>
+    
+    <div id="example"></div>
+    <div id="example2"></div>
+    <script type="text/babel"> 
+        // React 事件处理
+        // React 事件绑定属性的命名采用驼峰式的写法，而不是小写
+        // 如果采用 JSX 的语法你需要传入一个函数作为事件处理函数，而不是一个字符串(DOM 元素的写法)
+
+        // 在 React 中另一个不同是你不能使用返回 false 的方式阻止默认行为， 你必须明确的使用 preventDefault。
+
+        /**
+         * 正常在HTML中的写法
+         * <a href="#" onclick="console.log('点击链接'); return false">
+         *   点我
+         * </a>
+         * 
+         * **/
+
+        //  在React 的写法
+        function ActionLink() {
+            function handleClick(e) {
+                e.preventDefault();
+                console.log("链接被点击")
+            }
+
+            return (
+                <a href="#" onClick={handleClick}>
+                    点我    
+                </a>
+            )
+        }
+
+
+
+    </script>
+
+
+</body>
+</html>
