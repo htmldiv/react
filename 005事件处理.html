@@ -2,7 +2,7 @@
  * @Author: GuoZhongkang
  * @Description: react React 事件处理
  * @Date: 2020-08-07 17:06:13
- * @LastEditTime: 2020-08-08 18:15:33
+ * @LastEditTime: 2020-08-10 14:28:21
  * @FilePath: \react\005事件处理.html
 -->
 <!DOCTYPE html>
@@ -47,8 +47,116 @@
                 </a>
             )
         }
+        // 实例中e是一个合成事件
+        // 使用React的时候通常你不需要使用addEventListener为一个已创建的DOM元素添加监听器。你不仅仅需要在这个元素初始渲染的时候提供一个监听器。
+        // 当你使用ES6 class语法来定义一个组件的时候，事件处理器会成为类的一个方法。 例如下面的Toggle组件渲染一个让用户切换开关状态的按钮：
+         class Toggle extends React.Component {
+             constructor(props) {
+                 super(props);
+                 this.state = {
+                     isToggleOn: true
+                 }
+                //  这边绑定是必要的，这样 this 才能在回调函数中使用
+                this.handleClick = this.handleClick.bind(this);
+             }
 
+             handleClick() {
+                 this.setState(prevState => ({
+                     isToggleOn: !prevState.isToggleOn
+                 }));
+             }
 
+             render() {
+                 return (
+                    <button onClick={this.handleClick}>
+                        {this.state.isToggleOn ? "ON" : "OFF"}
+                    </button>
+                 )
+             }
+         }
+
+         ReactDOM.render(
+            <Toggle />,
+            document.getElementById('example')
+         )
+
+        //  你必须谨慎对待JSX回调函数中的this， 类的方法默认是不会绑定this的。 如果你忘记绑定this.handleClick 并把它传入onClick,
+        // 当你调用这个函数的时候 this 的值会是undefined
+        //  这并不是React的特殊行为：它是函数如何在JavaScript中运行的一部分。通常情况下，如果你没有在方法后面添加（），例如
+        //  onClick={this.handleClick}。 你应该为这个方法绑定this。
+
+        // 如果使用bind让你很烦，这里有两种方法可以解决。如果你正在使用实验性的属性初始化器语法，你可以使用属性初始化器来
+        // 正确的绑定回调函数
+
+        class LoggingButton extends React.Component {
+            // 这个语法确保了 this 绑定在 handleClick 中
+            // 这里只是一个测试
+            handleClick = () => {
+                console.log('this is', this)
+            }
+
+            render() {
+                return (
+                    <button onClick={this.handleClick}>
+                        Click me    
+                    </button>
+                )
+            }
+        }
+
+        // 如果你没有使用属性初始化器语法，你可以在回调函数中使用 箭头函数：
+        class LoggingButton extends React.Component {
+            handleClick() {
+                console.log('this is:', this)
+            }
+            
+            render() {
+                // 这个语法确保了 this 绑定在 handleClick 中
+                return (
+                    <button onClick={(e) => this.handleClick(e)}>
+                        Click me    
+                    </button>
+                ) 
+            }
+        }
+        // 使用这个语法有个问题就是，每次LoggingButton 渲染的时候都会创建一个不同的回调函数。 在大多数情况下，这没有问题。然而
+        // 如果这个回调函数作为一个属性值传入低阶组件，这些组件可能会进行额外的重新渲染。我们通常建议在构造函数中绑定或使用
+        // 属性初始化器语法来避免这类性能问题
+
+        // 向事件处理程序传递参数
+        // 通常我们会为时间处理程序传递额外的参数。例如，若是id是你要删除的那一行的id， 以下两种方式都可以向事件处理程序传递参数：
+
+        // <button onClick={(e) => this.deleteRow(id, e)} >Delete Row</button>
+        // <button onClick={this.deleteRow.bind(this, id)} >Delete Row</button>
+        
+        // 上述两种方式是等价的。
+        // 上面两个例子中，参数e作为React事件对象将会被作为第二个参数进行传递。 通过箭头函数的方式，事件对象必须显式的进行
+        // 传递，但是通过bind的方式，事件对象以及更多的参数将会被隐式的进行传递。
+        // 值得注意的是，通过bind方式向监听函数传参，在类组件中定义函数，事件对象e要在所传递参数的后面，例如：
+
+        class Popper extends React.Component {
+            constructor() {
+                super();
+                this.state = {name: 'Hello World!'}
+            }
+            
+            preventPop(name, e) {  // 事件对象 e 要放在最后
+                e.preventDefault();
+                alert(name);
+            }
+
+            render() {
+                return (
+                    <div>
+                        <p>hello</p>    
+                        {/* 通过 bind() 方法传递参数 */}
+                        <a href="www.baidu.com" onClick={this.preventPop.bind(this, this.state.name)}>Click</a>
+                    </div>
+
+                )
+            }
+
+        }
 
     </script>
 

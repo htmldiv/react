@@ -1,0 +1,135 @@
+<!--
+ * @Author: GuoZhongkang
+ * @Description: react React 列表和Keys
+ * @Date: 2020-08-07 17:06:13
+ * @LastEditTime: 2020-08-10 17:56:55
+ * @FilePath: \react\007列表和Keys.html
+-->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>React 列表和Keys</title>
+<script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+<script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+<script src="https://cdn.bootcss.com/prop-types/15.6.1/prop-types.js"></script>
+<script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+</head>
+<body>
+    
+    <div id="example"></div>
+    <div id="example2"></div>
+    <script type="text/babel"> 
+        // React 列表和Keys
+       
+        // 使用 map() 方法遍历数组生成一个 1 到 5 的数字列表：
+        // const numbers = [1, 2, 3, 4, 5];
+        // const listItems = numbers.map((numbers) =>
+        //     <li>{numbers}</li>
+        // );
+
+        // ReactDOM.render(
+        //     <ul>{listItems}</ul>,
+        //     document.getElementById('example')
+        // )
+
+        // 可以将以上实例重构成一个组件，组件接收数组参数，每个列表元素分配一个key, 不然会出现警告 'a key should be provided for list items'
+        // 意思就是需要包含key
+        function NumberList(props) {
+            console.log(props)
+            const numbers = props.number;
+            const listItems = numbers.map((number) =>
+                <li key={number.toString()}>
+                    {number}    
+                </li>
+            );
+            return (
+                <ul>{listItems}</ul>
+            )
+        }
+        const numbers2 = [6, 7, 8, 9, 10];
+        ReactDOM.render(
+            <NumberList number={numbers2} />,
+            document.getElementById("example2")
+        )
+
+
+        // Keys 可以在DOM中的某些元素被增加或删除的时候帮助 React 识别哪些元素发生了变化。因为你应当给数组中的每一个元素赋予一个确定的标识
+        const numbers3 = [11, 12, 13, 14];
+        const listItems3 = numbers3.map((item) =>
+            <li key={item.toString()}>
+                {item}    
+            </li>
+        )
+
+        // 用keys提取组件
+        // 元素的key只有在它的兄弟节点对比时才有意义。
+        // 比方说，如果你提取出一个ListItem组件， 你应该把key保存在数组中的这个 <ListItem /> 元素上，而不是
+        // 放在 ListItem 组件中的 <li /> 元素上
+
+        // 错误示范
+        function listItem(props) {
+            const value = props.value;
+            return (
+                // 错了，你不需要在这里指定key
+                <li key={value.toString()}>
+                    {value}    
+                </li>
+            )
+        }
+        function NumberList(props) {
+            const numbers = props.numbers;
+            const listItems = numbers.map((number) =>
+                // 对啦！key应该在数组的上下文中被指定
+                <ListItem key={number.toString()}
+                        value={number} />
+            
+            );
+            return (
+                <ul>
+                    {listItems}
+                </ul>
+            );
+        }
+        // 当你在 map() 方法的内部调用元素时，你最好随时记得为每一个元素加上一个独一无二的 key。
+        // 获取独一无二的key常用方法是 id.toString + 随机数字符串
+
+        // key 会作为给 React 的提示，但不会传递给你的组件。如果组件中需要使用到key值，可以使用id等属性传递。
+
+        // 在JSX中嵌入map()
+        function NumberList5(props) {
+            const numbers = props.numbers;
+            const listItems = numbers.map((number) => 
+                <ListItem
+                    key={number.toString()}
+                    value={number}
+                />
+            );
+            return (
+                <ul>
+                    {listItems}    
+                </ul>
+            )
+        }
+        // JSX 允许在大括号中嵌入任何表达式，所以我们可以在ma() 中这样使用：
+        function NumberList6(props) {
+            const numbers = props.numbers;
+            return (
+                <ul>
+                    {numbers.map((number) => 
+                        <ListItem 
+                            key={number.toString()}
+                            value={number}
+                        />
+                    )}    
+                </ul>
+            )
+        }
+        // 这么做有时候可以使你的代码更清晰，但有时这种风格也会被滥用。 就像JavaScript中一样， 何时需要为了可读性提取出一个变量，
+        // 这完全取决于你。 但请记住，如果一个 map() 嵌套了太多层级，那你就可以提取出组件。
+
+    </script>
+
+
+</body>
+</html>
