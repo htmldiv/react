@@ -46,10 +46,103 @@
          * 6. componentDidUpdate: 在组件完成更新后立即调用。 在初始化时不会被调用。
          * 
          * 7. componentWillUnmount: 在组件从DOM中移除之前立刻被调用
-         * 
-         * 
-         * 
+         *
          * **/
+        
+        // 以下实例在 Hello 组件加载以后，通过 componentDidMount 方法设置一个定时器， 每隔100秒重新设置组件的透明度，并重新
+        // 渲染：
+
+        class Hello extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {opacity: 1.0};
+            }
+
+            componentDidMount() {
+                this.timer = setInterval(function() {
+                    var opacity = this.state.opacity;
+                    opacity -= .05;
+                    if(opacity < 0.1) {
+                        opacity = 1.0;
+                    }
+                    this.setState({
+                        opacity: opacity
+                    });
+                }.bind(this), 100);
+            }
+            render() {
+                return (
+                    <div style={{opacity: this.state.opacity}}>
+                        Hello {this.props.name}
+                    </div>
+                );
+            }
+        }
+
+        ReactDOM.render(
+            <Hello name="world" />,
+            document.body
+        )
+
+        // 以下实例初始化state， setNewnumber 用于更新state。所有生命周期在Content组件中。
+        class Button extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {data: 0};
+                this.setNewnumber = this.setNewnumber.bind(this);
+            }
+
+            setNewnumber() {
+                this.setState({data: this.state.data + 1})
+            }
+            render() {
+                return (
+                    <div>
+                        <button ocClick = {this.setNewnumber} >INCREMENT</button>
+                        <Content myNumber = {this.state.data}></Content>
+                    </div>
+                )
+            }
+        }
+
+        class Content extends React.Component {
+            componentWillMount() {
+                console.log("Component WILL MOUNT!")
+            }
+            componentDidMount() {
+                console.log("Component DID MOUNT!")
+            }
+            componentWillReceiveProps(newProps) {
+                console.log("Component WILL RECEIVE PROPS!")
+            }
+            shouldComponentUpdate(newProps, newState) {
+                return true;
+            }
+            componentWillUpdate(nextProps, nextState) {
+                console.log("Component WILL UPDATE!")
+            }
+            componentDidUpdate(prevProps, prevState) {
+                console.log("Component DID UPDATE")
+            }
+            componentWillUnmount() {
+                console.log("Component WILL UNMOUNT!")
+            }
+
+            render() {
+                return (
+                    <div>
+                        <h3>{this.props.myNumber}</h3>
+                    </div>
+                );
+            }
+        }
+        
+        ReactDOM.render(
+            <div>
+                <Button />
+            </div>,
+            document.getElementById("example2")
+        )
        
 
 
