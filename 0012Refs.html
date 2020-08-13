@@ -1,0 +1,75 @@
+<!--
+ * @Author: GuoZhongkang
+ * @Description: react React Refs
+ * @Date: 2020-08-07 17:06:13
+ * @LastEditTime: 2020-08-13 18:48:18
+ * @FilePath: \react\0012Refs.html
+-->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>React Refs</title>
+<script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+<script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+<script src="https://cdn.bootcss.com/prop-types/15.6.1/prop-types.js"></script>
+<script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+</head>
+<body>
+    
+    <div id="example"></div>
+    <div id="example2"></div>
+    <div id="example3"></div>
+    <div id="example4"></div>
+    <div id="example5"></div>
+    <div id="example6"></div>
+    <script type="text/babel"> 
+        // React Refs
+        /**
+         * React 支持一种非常特殊的属性Ref， 你可以用来绑定到rende() 输出的任何组件上。。
+         * 
+         * 这个特殊的属性允许你引用 render() 返回的相应的支撑实例（backing instance)。这样就可以确保在任何时间总是拿到正确的实例。
+         * 
+         * **/
+        // 使用方法
+        // 绑定一个ref属性到render的返回值上：
+        // <input ref="myInput" />
+        // 在其他代码中，通过this.refs 获取支撑实例
+        // var input = this.refs.myInput;
+        // var inputValue = input.value;
+        // var inputRect = input.getBoundingClientRect();
+
+
+        // 完整实例
+        // 你可以通过使用 this 来获取当前 React 组件， 或者使用 ref 来获取组件的引用，实例如下：
+        class MyComponent extends React.Component {
+            handleClick() {
+                // 使用原生的DOM API 获取焦点
+                this.refs.myInput.focus();
+            }
+            render() {
+                // 当组件插入到 DOM 后，ref 属性添加一个组件的引用于到 this.refs
+                return (
+                    <div>
+                        <input type="text" ref="myInput" />    
+                        <input 
+                            type="button"
+                            value="点我输入框获取焦点"
+                            onClick={this.handleClick.bind(this)}
+                        />
+                    </div>
+                )
+            }
+        }
+        ReactDOM.render(
+            <MyComponent />,
+            document.getElementById("example")
+        )
+      
+
+
+    </script>
+
+
+</body>
+</html>
